@@ -1,18 +1,16 @@
-export interface RegisterDto{
+export class RegisterDto{
     id:string;
     username:string;
     email:string;
     password:string;
-    role:string;
 
 
 }
 
 
-export interface LoginDto{
+export class LoginDto{
     id:string;
     username:string;
     email:string;
     password:string;
-    role:string;
 }

@@ -1,56 +1,49 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from './Dto';
-import * as bcrypt from 'bcrypt';
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-@Injectable()
-export class UsersService {
-  constructor(
-    private readonly prisma: PrismaClient,
-    private readonly jwtService: JwtService,
-  ) {}
-
-  async register(registerDto: RegisterDto): Promise<{ accessToken: string }> {
-    const { username, email, password, role } = registerDto;
-
-    const existingUserByEmail = await this.prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (existingUserByEmail) {
-      throw new UnauthorizedException('Email already exists');
-    }
-
-    const existingUserByUsername = await this.prisma.user.findUnique({
-      where: {
-        username,
-      },
-    });
-
-    if (existingUserByUsername) {
-      throw new UnauthorizedException('Username is already taken');
-    }
-
-    // Hash the password using bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create a new user
-    const user = await this.prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword,
-        role,
-      },
-    });
-
-    // Generate an access token
-    const accessToken = this.jwtService.sign({ sub: user.id });
-    return { accessToken };
-  }
-
+// generator client {
+//     provider = "prisma-client-js"
+//   }
   
-}
+//   datasource db {
+//     provider = "postgresql"
+//     url      = env("DATABASE_URL")
+//   }
+  
+//   model User {
+//     id                Int      @id @default(autoincrement())
+//     username          String   @unique
+//     email             String   @unique
+//     password          String
+//     role              String    
+//     adminTasks        Tasks[]  @relation("AdminTasks")
+//     collaboratorTasks Tasks[]  @relation("CollaboratorTasks")
+//     commits           Commit[]
+//   }
+  
+//   model Tasks {
+//     id               Int      @id @default(autoincrement())
+//     taskTitle         String
+//     startingDate     DateTime
+//     adminId          Int
+//     numCollaborators Int
+//     numCommits       Int
+//     admin            User     @relation("AdminTasks", fields: [adminId], references: [id])
+//     collaborators    User[]   @relation("CollaboratorTasks")
+//     commits          Commit[] @relation("TaskCommits")
+//   }
+  
+//   model Commit {
+//     id      Int    @id @default(autoincrement())
+//     taskId  Int
+//     userId  Int
+//     message String
+//     // ... other commit-related fields
+  
+//     // Relationship with tasks: A commit is associated with one task
+//     task Tasks @relation("TaskCommits", fields: [taskId], references: [id])
+  
+//     // Relationship with users: A commit is made by one user
+//     user User @relation(fields: [userId], references: [id])
+//   }
+  
