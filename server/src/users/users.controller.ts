@@ -1,12 +1,38 @@
-import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  Body,
+  HttpException,
+  Query,
+  Get,
+  NotFoundException,
+} from '@nestjs/common';
 import { LoginDto, RegisterDto } from './Dto';
 import { LoginService } from './login.service';
 import { RegisterService } from './register.service';
+import { PrismaClient } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
-  constructor(private loginService:LoginService, private registerService:RegisterService) {}
-
+  constructor(
+    private loginService: LoginService,
+    private registerService: RegisterService,
+    private PrismaClient: PrismaClient,
+  ) {}
+  @Get()
+  async GetUser(@Query('email') email: string) {
+    const user = await this.PrismaClient.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('Not Found');
+    }
+    return user;
+  }
   @Post('/register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() registerDto: RegisterDto) {
@@ -23,7 +49,10 @@ export class UsersController {
     const user = await this.loginService.login(loginDto);
 
     if (!user) {
-      throw new HttpException('Invalid email or password', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'Invalid email or password',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     // Generate an access token and return it in the response

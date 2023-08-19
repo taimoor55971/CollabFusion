@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,51 +7,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// // This is your Prisma schema file,
-// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+model User {
+  id                  Int       @id @default(autoincrement())
+  username            String    @unique
+  email               String    @unique
+  password            String
+  adminProjects       Project[] @relation("AdminProjects")
+  projectCollaborator Project[] @relation("CollaboratorProjects")
+  commits             Commit[]
+  userCreatedAt       DateTime  @default(now())
+  updatedAt           DateTime  @default(now()) @updatedAt
+}
 
-// generator client {
-//     provider = "prisma-client-js"
-//   }
-  
-//   datasource db {
-//     provider = "postgresql"
-//     url      = env("DATABASE_URL")
-//   }
-  
-  model User {
-    id                Int      @id @default(autoincrement())
-    username          String   @unique
-    email             String   @unique
-    password          String
-    adminTasks        Tasks[]  @relation("AdminTasks")
-    collaboratorTasks Tasks[]  @relation("CollaboratorTasks")
-    commits           Commit[]
-  }
-  
-  model Tasks {
-    id               Int      @id @default(autoincrement())
-    taskTitle         String
-    startingDate     DateTime
-    adminId          Int
-    numCollaborators Int
-    numCommits       Int
-    admin            User     @relation("AdminTasks", fields: [adminId], references: [id])
-    collaborators    User[]   @relation("CollaboratorTasks")
-    commits          Commit[] @relation("TaskCommits")
-  }
-  
-  model Commit {
-    id      Int    @id @default(autoincrement())
-    taskId  Int
-    userId  Int
-    message String
-    // ... other commit-related fields
-  
-    // Relationship with tasks: A commit is associated with one task
-    task Tasks @relation("TaskCommits", fields: [taskId], references: [id])
-  
-    // Relationship with users: A commit is made by one user
-    user User @relation(fields: [userId], references: [id])
-  }
-  
+model Project {
+  id                 Int      @id @default(autoincrement())
+  projectTitle       String  @unique
+  projectDescription String
+  adminId            Int 
+  numCollaborators   Int      @default(1)
+  admin              User     @relation("AdminProjects", fields: [adminId], references: [id])
+  collaborators      User[]   @relation("CollaboratorProjects")
+  tasks              Task[]
+  startingDate       DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+}
+
+model Task {
+  id              Int      @id @default(autoincrement())
+  taskTitle       String @unique
+  taskDescription String
+  numCommits      Int
+  projectId       Int 
+  project         Project  @relation(fields: [projectId], references: [id])
+  commits         Commit[]
+  TaskCreatedAt   DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+}
+
+model Commit {
+  id              Int      @id @default(autoincrement())
+  taskId          Int
+  userId          Int
+  message         String
+  task            Task     @relation(fields: [taskId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
+  CommitCreatedAt DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+}

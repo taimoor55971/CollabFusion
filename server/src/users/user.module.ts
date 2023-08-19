@@ -5,6 +5,6 @@ import { RegisterService } from './register.service';
 
 @Module({})
 export class UserModule {
-  Controller = [UsersController];
+  Controller = [UsersController]
   Provider = [LoginService,RegisterService];
 }

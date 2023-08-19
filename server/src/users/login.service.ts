@@ -35,11 +35,15 @@ export class LoginService {
     // Generate an access token using the retrieved user object
     const accessToken = this.generateAccessToken(user);
 
-    return { accessToken };
+    return { accessToken} ;
   }
 
   generateAccessToken(user: User): string {
     const payload = { sub: user.id, username: user.username, email: user };
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign(payload,{
+      secret: process.env.JWT_TOKEN,
+      expiresIn: '12h',
+      
+    });
   }
 }
