@@ -2,8 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, Project } from '@prisma/client';
-import { ProjectDto } from './Dto';
-import { LoginService } from '../users/login.service';
+import { ProjectDto } from './Project.Dto';
 import { JwtService } from '@nestjs/jwt';
 
 
@@ -46,7 +45,7 @@ const decodeToken=await this.JwtService.decode(accessToken) as { sub: number, us
   async getAllProjectsByAdmin(adminId: number) {
     return this.prisma.project.findMany({
       where: {
-        adminId,
+        adminId:adminId ,
       },
     });
   }

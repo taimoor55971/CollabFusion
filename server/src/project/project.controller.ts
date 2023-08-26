@@ -1,7 +1,8 @@
-import { Controller, Get, Query, Post, Body, Req, Request, BadRequestException, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body, Req, Request, BadRequestException, Put, Param, Delete, UseGuards,HttpCode,HttpStatus } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { ProjectDto } from './Dto';
+import { ProjectDto } from './Project.Dto';
 import { ProjectService } from './project.service';
+import { AuthenticationMiddleware } from 'src/middleware/authentication/authentication.middleware';
 
 @Controller('project')
 export class ProjectController {
@@ -10,18 +11,16 @@ export class ProjectController {
   // const accessToken=localStorage(this.accessToken)
   
 
-  @Get()
-  async getAllProjects(@Query('adminId') adminId: number) {
-    const projects = await this.prisma.project.findMany({
-      where: {
-        adminId: adminId,
-      },
-    });
-
+  @Get(':adminId')
+  async getProjectsByAdmin(@Param('adminId') adminId: string) {
+    const numericAdminId = parseInt(adminId, 10); // Convert the string to a number
+    const projects = await this.ProjectService.getAllProjectsByAdmin(numericAdminId);
     return projects;
   }
 
   @Post('/create')
+  @HttpCode(HttpStatus.CREATED)
+
 async createProject(@Body() projectDto: ProjectDto, @Req() request: Request) {
   const authorizationHeader = request.headers['authorization'];
   

@@ -1,0 +1,17 @@
+[33mcommit c51260ee48499dbf8ae4fab316304bfd86fb4286[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Muhammad Taimoor Khan <62849524+taimoor55971@users.noreply.github.com>
+Date:   Sun Aug 20 04:19:34 2023 +0500
+
+    project creation and CRUD and collaboration inviation complete
+
+[33mcommit 65d2121a9ddd178e25606e5c9b3d17f9ac1fb901[m
+Author: Muhammad Taimoor Khan <62849524+taimoor55971@users.noreply.github.com>
+Date:   Sun Aug 13 21:38:22 2023 +0500
+
+    Login and registration api complted and Modals are implemented
+
+[33mcommit 196b30f46de8a1efc1b290d4c84eedccdeeca76c[m[33m ([m[1;31morigin/development[m[33m)[m
+Author: Muhammad Taimoor Khan <62849524+taimoor55971@users.noreply.github.com>
+Date:   Sat Aug 12 23:18:31 2023 +0500
+
+    Project Setup, User registeration Api completed, prisma ORM integrated

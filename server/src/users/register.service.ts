@@ -3,6 +3,7 @@ import { PrismaClient, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import {  RegisterDto } from './Dto';
 import * as bcrypt from 'bcrypt';
+import { generateBearerToken } from 'src/Utils/GenerateToken';
 
 @Injectable()
 export class RegisterService {
@@ -49,16 +50,11 @@ export class RegisterService {
     });
 
     // Generate an access token
-    const accessToken = this.generateAccessToken(user);
+    
+    const accessToken = generateBearerToken(user, this.jwtService);
+
     return { accessToken };
   }
 
-    generateAccessToken(user: User): string {
-    const payload = { sub: user.id, username: user.username, email: user.email};
-    return this.jwtService.sign(payload,{
-      secret: process.env.JWT_TOKEN,
-      expiresIn: '12h',
-      
-    });
-  }
+  
 }

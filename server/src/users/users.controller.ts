@@ -13,6 +13,8 @@ import { LoginDto, RegisterDto } from './Dto';
 import { LoginService } from './login.service';
 import { RegisterService } from './register.service';
 import { PrismaClient } from '@prisma/client';
+import { UseGuards } from '@nestjs/common';
+import { AuthenticationMiddleware } from '../middleware/authentication/authentication.middleware';
 
 @Controller('users')
 export class UsersController {
@@ -21,6 +23,7 @@ export class UsersController {
     private registerService: RegisterService,
     private PrismaClient: PrismaClient,
   ) {}
+  @UseGuards(AuthenticationMiddleware)
   @Get()
   async GetUser(@Query('email') email: string) {
     const user = await this.PrismaClient.user.findUnique({

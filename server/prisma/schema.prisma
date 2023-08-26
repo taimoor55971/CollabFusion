@@ -21,24 +21,24 @@ model User {
 
 model Project {
   id                 Int      @id @default(autoincrement())
-  projectTitle       String  @unique
+  projectTitle       String   @unique
   projectDescription String
   adminId            Int 
   numCollaborators   Int      @default(1)
   admin              User     @relation("AdminProjects", fields: [adminId], references: [id])
   collaborators      User[]   @relation("CollaboratorProjects")
-  tasks              Task[]
+  tasks              Task[]   // Establish the relationship here
   startingDate       DateTime @default(now())
   updatedAt          DateTime @default(now()) @updatedAt
 }
 
 model Task {
   id              Int      @id @default(autoincrement())
-  taskTitle       String @unique
+  taskTitle       String   @unique
   taskDescription String
-  numCommits      Int
-  projectId       Int 
-  project         Project  @relation(fields: [projectId], references: [id])
+  numCommits      Int      @default(0)
+  projectId       Int      // Reference to the associated project
+  project         Project  @relation(fields: [projectId], references: [id]) // Relationship to the Project model
   commits         Commit[]
   TaskCreatedAt   DateTime @default(now())
   updatedAt       DateTime @default(now()) @updatedAt
