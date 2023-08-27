@@ -59,7 +59,23 @@ async createProject(@Body() projectDto: ProjectDto, @Req() request: Request) {
 
     const accessToken = authorizationHeader;
 
-    return await this.ProjectService.deleteProject(accessToken, projectId);
+    return await this.ProjectService.deleteProject(accessToken, parseInt(projectId));
   }
 
+  @Post(':id/invite')
+  async sendInvitationEmail(
+    @Param('id') projectId: string,
+    @Body('email') email: string,
+    @Req() request: Request
+  ): Promise<void> {
+    const authorizationHeader = request.headers['authorization'];
+  
+    if (!authorizationHeader || !authorizationHeader) {
+      throw new BadRequestException('Missing or invalid Authorization header');
+    }
+
+    const accessToken = authorizationHeader;
+
+    return this.ProjectService.sendInvitationEmail(parseInt(projectId), email, accessToken);
+  }
 }

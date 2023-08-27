@@ -15,14 +15,11 @@ import { ProjectService } from './project/project.service';
 import {AuthenticationMiddleware} from './middleware/authentication/authentication.middleware';
 import { MiddlewareConsumer ,NestModule} from '@nestjs/common'
 
-// import { TaskService } from './project/Tasks/Tasks.service';
-// import { TasksModule } from './project/tasks/tasks.module';
-// import { TasksController } from './project/tasks/tasks.controller';
+
 import { TaskService } from './project/tasks/tasks.service';
 import { TaskController } from './project/tasks/tasks.controller';
 import { TaskModule } from './project/tasks/tasks.module';
-import { JwtStrategy } from './jwt.strategy';
-// import { TasksModule } from './tasks/tasks.module';
+import { MailService } from './Mail/Mail.service';
 
 
 @Module({
@@ -49,7 +46,7 @@ import { JwtStrategy } from './jwt.strategy';
     ProjectService,
     JwtService,
     TaskService,
-    JwtStrategy
+    MailService
     // AuthenticationMiddleware
   ],
 })

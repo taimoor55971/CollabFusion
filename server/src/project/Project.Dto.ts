@@ -3,3 +3,7 @@ export interface ProjectDto{
     projectDescription:string;
     
 }
+
+export class InviteCollaboratorDto {
+  email: string;
+}

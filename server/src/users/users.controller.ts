@@ -25,7 +25,7 @@ export class UsersController {
   ) {}
   @UseGuards(AuthenticationMiddleware)
   @Get()
-  async GetUser(@Query('email') email: string) {
+  async GetUser(@Query('email') email: string,@Query('password') password:number) {
     const user = await this.PrismaClient.user.findUnique({
       where: {
         email,
