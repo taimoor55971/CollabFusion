@@ -114,3 +114,15 @@ Proper authentication and authorization mechanisms are crucial for the security 
 
 - **Admin Privileges:** Implement an admin role with elevated privileges.
 
+### Setup Guidelines
+
+1. Clone the project: `git clone https://github.com/taimoor55971/CollabFusion.git`
+2. Move to Directory: `cd server`
+3. Install Dependencies: `npm install`
+4. Create .env file in server directory with required variables.
+    - DATABASE_URL
+    - JWT_TOKEN
+    - MAILTRAP_USER
+    - MAILTRAP_PASS
+5. Push the Schema to SupaBase: `npx prisma db push`
+6. Run the project: `npm run start:dev`
